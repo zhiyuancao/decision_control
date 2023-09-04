@@ -1,6 +1,7 @@
 import pickle
 import tkinter as tk
 import tkinter.messagebox
+import os
 
 from PIL import Image, ImageTk
 
@@ -116,13 +117,15 @@ class LoginPage(tk.Tk):
             np = new_pwd.get()
             npf = new_pwd_confirm.get()
             nn = new_name.get()
-            with open("usrs_info.pickle", "rb") as usr_file:
-                exist_usr_info = pickle.load(usr_file)
-            if np != npf:
-                tk.messagebox.showerror("错误", "密码不一致!")
-            elif nn in exist_usr_info:
-                tk.messagebox.showerror("错误", "已经存在的用户名!")
+            if os.path.exists("usrs_info.pickle"):
+                with open("usrs_info.pickle", "rb") as usr_file:
+                    exist_usr_info = pickle.load(usr_file)
+                if np != npf:
+                    tk.messagebox.showerror("错误", "密码不一致!")
+                elif nn in exist_usr_info:
+                    tk.messagebox.showerror("错误", "已经存在的用户名!")
             else:
+                exist_usr_info = {}
                 exist_usr_info[nn] = np
                 with open("usrs_info.pickle", "wb") as usr_file:
                     pickle.dump(exist_usr_info, usr_file)
