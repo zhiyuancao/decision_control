@@ -1,7 +1,6 @@
 import pickle
 import tkinter as tk
 import tkinter.messagebox
-import os
 
 from PIL import Image, ImageTk
 
@@ -44,7 +43,7 @@ class LoginPage(tk.Tk):
             self.window_width * banner_size[1] // banner_size[0],
         )
 
-        banner_image = banner_image.resize(banner_size_new, Image.Resampling.BILINEAR)
+        banner_image = banner_image.resize(banner_size_new)
         self.canvas_baner = tk.Canvas(
             self,
             height=banner_size_new[1],
@@ -117,14 +116,14 @@ class LoginPage(tk.Tk):
             np = new_pwd.get()
             npf = new_pwd_confirm.get()
             nn = new_name.get()
-            if os.path.exists("usrs_info.pickle"):
+            try:
                 with open("usrs_info.pickle", "rb") as usr_file:
                     exist_usr_info = pickle.load(usr_file)
                 if np != npf:
                     tk.messagebox.showerror("错误", "密码不一致!")
                 elif nn in exist_usr_info:
                     tk.messagebox.showerror("错误", "已经存在的用户名!")
-            else:
+            except FileNotFoundError:
                 exist_usr_info = {}
                 exist_usr_info[nn] = np
                 with open("usrs_info.pickle", "wb") as usr_file:

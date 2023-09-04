@@ -111,12 +111,21 @@ class DecisionControl(uiDecisionControl):
     def start_exp(self):
         if self.check_model():
             self.trail_index = 0
+            self.correct_trial = 0
             self.stat_view.delete(*self.stat_view.get_children())
             self.trial_rounds = int(self.rounds_chosen.get())
-            self.label_sequence = [
-                random.choice(DECISION_CONTROL_CATEGORY)
-                for _ in range(self.trial_rounds)
-            ]
+            # self.label_sequence = [
+            #     random.choice(DECISION_CONTROL_CATEGORY)
+            #     for _ in range(self.trial_rounds)
+            # ]
+            label_repeat = self.trial_rounds // len(DECISION_CONTROL_CATEGORY)
+            self.label_sequence = DECISION_CONTROL_CATEGORY * label_repeat
+            if len(self.label_sequence) < self.trial_rounds:
+                [
+                    self.label_sequence.append(random.choice(DECISION_CONTROL_CATEGORY))
+                    for _ in range(self.trial_rounds - len(self.label_sequence))
+                ]
+            random.shuffle(self.label_sequence)
 
             self.do_single_trail()
 

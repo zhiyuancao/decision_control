@@ -1,4 +1,4 @@
-
+*.pickle
 *.pth
 **/.idea
 **/.vscode
