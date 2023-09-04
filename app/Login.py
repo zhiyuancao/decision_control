@@ -119,17 +119,19 @@ class LoginPage(tk.Tk):
             try:
                 with open("usrs_info.pickle", "rb") as usr_file:
                     exist_usr_info = pickle.load(usr_file)
-                if np != npf:
-                    tk.messagebox.showerror("错误", "密码不一致!")
-                elif nn in exist_usr_info:
-                    tk.messagebox.showerror("错误", "已经存在的用户名!")
             except FileNotFoundError:
                 exist_usr_info = {}
-                exist_usr_info[nn] = np
+
+            if nn in exist_usr_info:
+                tk.messagebox.showerror("错误", "已经存在的用户名!")
+            elif np != npf:
+                tk.messagebox.showerror("错误", "密码不一致!")
+            else:
                 with open("usrs_info.pickle", "wb") as usr_file:
+                    exist_usr_info[nn] = np
                     pickle.dump(exist_usr_info, usr_file)
                 tk.messagebox.showinfo("成功", "注册成功！")
-                window_sign_up.destroy()
+            window_sign_up.destroy()
 
         window_sign_up = tk.Toplevel(self)
         window_sign_up.geometry("600x300")
