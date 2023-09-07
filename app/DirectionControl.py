@@ -141,8 +141,12 @@ class DirectionControl(uiDirectionControl):
             #     random.choice(DIRECTION_CONTROL_CATEGORY)
             #     for _ in range(self.trial_rounds)
             # ]
+            self.label_sequence = []
+            category_copy = DIRECTION_CONTROL_CATEGORY.copy()
             label_repeat = self.trial_rounds // len(DIRECTION_CONTROL_CATEGORY)
-            self.label_sequence = DIRECTION_CONTROL_CATEGORY * label_repeat
+            for _ in range(label_repeat):
+                random.shuffle(category_copy)
+                self.label_sequence = self.label_sequence + category_copy
             if len(self.label_sequence) < self.trial_rounds:
                 [
                     self.label_sequence.append(
@@ -150,8 +154,6 @@ class DirectionControl(uiDirectionControl):
                     )
                     for _ in range(self.trial_rounds - len(self.label_sequence))
                 ]
-            random.shuffle(self.label_sequence)
-
         self.do_single_trail()
 
     def do_single_trail(self):
